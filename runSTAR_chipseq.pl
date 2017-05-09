@@ -12,9 +12,9 @@ my %param =(
 'THREADS' => 1,
 'JOBS' => 1,
 'METRICS'=>0,
-'ALIGN'=>0,
-'LIBCOMPLEX'=>1,
-'FILTER'=>0
+'ALIGN'=>1,
+'LIBCOMPLEX'=>0,
+'FILTER'=>1
 );
 
 my $help;
@@ -107,7 +107,7 @@ foreach (keys %samples)
 		}
 
 	if($param{'LIBCOMPLEX'}){
-		my $libcomplexcmd = "java -jar /opt/picard/picard.jar EstimateLibraryComplexity I= $param{'ALNDIR'}/".$_."_filter.bam O=$param{'ALNDIR'}/".$_.".libcomplexfull";
+		my $libcomplexcmd = "java -jar /opt/picard/picard.jar EstimateLibraryComplexity I= $param{'ALNDIR'}/".$_."Aligned.sortedByCoord.out.bam O=$param{'ALNDIR'}/".$_.".libcomplexfull";
 		print $libcomplexcmd,"\n";
 		system($libcomplexcmd);
 		system("grep LIBRARY -A1 $param{'ALNDIR'}/".$_.".libcomplexfull > $param{'ALNDIR'}/".$_.".libcomplex");
@@ -141,7 +141,7 @@ foreach (keys %samples)
 
 $pm->wait_all_children;
 
-	$Summ_cmd = "~/ngs/bin/parseSTARLog.pl --dir $param{'ALNDIR'} > $param{'RESULTSDIR'}/STAR_summmary.csv";
+	$Summ_cmd = "~/NGS/bin/parseSTARLog.pl --dir $param{'ALNDIR'} > $param{'RESULTSDIR'}/STAR_summmary.csv";
 	print $Summ_cmd,"\n";
 	system($Summ_cmd);
 
